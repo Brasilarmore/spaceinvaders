@@ -8,10 +8,11 @@ def main():
     updatable_group = pygame.sprite.Group()
     drawable_group = pygame.sprite.Group()
     asteroid_group = pygame.sprite.Group()
+    shots_group = pygame.sprite.Group()
     AsteroidField.containers = (updatable_group,)
     Asteroid.containers = (updatable_group, drawable_group, asteroid_group)
     Player.containers = (updatable_group, drawable_group)
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, shots_group)
     asteroidfield = AsteroidField()
     clock = pygame.time.Clock()
     dt = 0
@@ -27,6 +28,7 @@ def main():
 
         dt = (clock.tick(60) / 1000)
         updatable_group.update(dt)
+        shots_group.update(dt)
         #check for collisions between asteroid and player
         for asteroid in asteroid_group:
             if asteroid.collision(player):
@@ -37,6 +39,8 @@ def main():
         screen.fill("black")
         for thing in drawable_group:
             thing.draw(screen)
+        for shot in shots_group:
+            shot.draw(screen)
         pygame.display.flip()
 
 if __name__ == "__main__":
